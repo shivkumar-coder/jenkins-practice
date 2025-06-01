@@ -1,13 +1,17 @@
 
 pipeline {
-    agent any
+    agent {
+		docker{
+			image 'ubuntu:22.04'
+		}
+	}
     stages {
         stage('Build') {
             steps {
-                bat 'echo "Hello World"'
-                bat '''
+                sh 'echo "Hello World"'
+                sh '''
                     echo "Multiline shell steps works too"
-                    dir
+                    ls
                 '''
             }
         }

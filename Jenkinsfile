@@ -5,8 +5,18 @@ pipeline {
 			image 'ubuntu:22.04'
 		}
 	}
+	
+	environment{
+		CC = 'clang'
+	}
+	
     stages {
         stage('Build') {
+		
+			environment{
+				DATE = '2nd JUNE 2025'
+			}
+		
             steps {
                 sh 'echo "Hello World"'
                 sh '''
@@ -14,6 +24,8 @@ pipeline {
                     ls
                 '''
 				echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+				
+				sh 'printenv'
             }
         }
     }

@@ -28,6 +28,23 @@ pipeline {
 				sh 'printenv'
             }
         }
+
+		stage('Test') {
+			steps{
+				echo "Running tests";
+
+
+			}
+		}
+
+		stage('Deploy') {
+			steps {	
+				input "Do you want to deploy?"
+				echo "Deploying application"
+				
+
+			}
+		}
     }
 	post {
 		always {
@@ -36,16 +53,12 @@ pipeline {
 		success {
 			echo 'This will run on success'
 			
-			mail to: 'shivkumarkhaishagicoder@gmail.com',
-				 subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
-				 body: "Build Id: ${env.BUILD_ID} completed successfully." 
+			
 		}
 		
 		failure{
 			echo 'This will run on failure'
-			mail to: 'shivkumarkhaishagicoder@gmail.com',
-				 subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-				 body: "Build Id: ${env.BUILD_ID} Failed." 
+			
 		}
 	}
 }

@@ -13,6 +13,7 @@ pipeline {
                     echo "Multiline shell steps works too"
                     ls
                 '''
+				echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
     }

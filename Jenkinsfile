@@ -30,6 +30,14 @@ pipeline {
         }
 
 		stage('Test') {
+		
+			when{
+				expression {
+					BRANCH_NAME == 'develop'
+					
+				}
+			}
+			
 			steps{
 				echo "Running tests";
 

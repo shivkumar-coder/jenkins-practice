@@ -2,7 +2,7 @@
 pipeline {
     agent {
 		docker{
-			image 'ubuntu:22.04'
+			image 'maven:3.8.6-openjdk-17'
 		}
 	}
 	tools{

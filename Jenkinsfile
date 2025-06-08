@@ -2,12 +2,10 @@
 pipeline {
     agent {
 		docker{
-			image 'maven:3.8.6-openjdk-17'
+			image 'maven:3.9.9-eclipse-temurin-21-noble'
 		}
 	}
-	tools{
-		maven 'Maven'
-	}
+	
 	
 	environment{
 		CC = 'clang'

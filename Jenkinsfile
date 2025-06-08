@@ -22,13 +22,9 @@ pipeline {
 			}
 		
             steps {
-                sh 'echo "Hello World"'
-                sh '''
-                    echo "Multiline shell steps works too"
-                    ls
-                '''
-				echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-				
+                
+				gv = load("script.groovy");
+				gv.buildStage();
 				
             }
         }
@@ -43,7 +39,7 @@ pipeline {
 			}
 			
 			steps{
-				echo "Running tests";
+				gv.testStage();
 
 
 			}
@@ -51,8 +47,7 @@ pipeline {
 
 		stage('Deploy') {
 			steps {	
-				input "Do you want to deploy?"
-				echo "Deploying application version ${params.version}"
+				gv.deployStage();
 				
 
 			}

@@ -5,6 +5,9 @@ pipeline {
 			image 'ubuntu:22.04'
 		}
 	}
+	tools{
+		maven 'Maven'
+	}
 	
 	environment{
 		CC = 'clang'
@@ -25,7 +28,7 @@ pipeline {
                 '''
 				echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
 				
-				sh 'printenv'
+				sh 'mvn clean install'
             }
         }
 

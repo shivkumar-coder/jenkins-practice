@@ -9,7 +9,7 @@ pipeline {
 		string(name: 'version', defaultValue: '1.0.0', description:'app version')
 		booleanParam(name:'executeTests', defaultValue:true , description:'check to execute tests')
 	}
-	
+	 
 	environment{
 		CC = 'clang'
 	}

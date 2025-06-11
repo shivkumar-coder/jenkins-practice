@@ -4,7 +4,8 @@ def buildStage(){
             echo "Multiline shell steps works too"
             ls
             '''
-			echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+			sh 'mvn clean package'
+			sh 'docker build --tag my-app-image:latest .'
 
 }
 
@@ -16,7 +17,7 @@ def testStage(){
 
 def deployStage(){
 
-	input "Do you want to deploy?"
+	sh 'docker run my-app-image:latest --name my-app-test-container'
 	echo "Deploying application version ${params.version}"
 }
 

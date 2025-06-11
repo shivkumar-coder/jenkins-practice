@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.test</groupId>
-	<artifactId>myapp-docker</artifactId>
+	<artifactId>java-app-jenkins</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>myapp-docker</name>
 	<description>Docker app</description>

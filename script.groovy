@@ -4,8 +4,10 @@ def buildStage(){
             echo "Multiline shell steps works too"
             ls
             '''
-			sh '/mvnw clean package'
-			sh 'docker build --tag my-app-image:latest .'
+			sh 'sudo apt-get update'
+			sh 'sudo apt-get install -y docker.io'
+			sh 'sudo service docker start'
+			sh 'sudo docker build --tag my-app-image:latest .'
 
 }
 

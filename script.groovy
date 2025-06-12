@@ -4,7 +4,7 @@ def buildStage(){
             echo "Multiline shell steps works too"
             ls
             '''
-			sh 'mvn clean package'
+			sh 'mvnw clean package'
 			sh 'docker build --tag my-app-image:latest .'
 
 }

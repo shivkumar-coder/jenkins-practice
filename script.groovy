@@ -16,7 +16,7 @@ def testStage(){
 
 def deployStage(){
 
-	sh 'docker run my-app-image:latest --name my-app-test-container'
+	sh 'docker run  --name my-app-test-container my-app-image:latest'
 	echo "Deploying application version ${params.version}"
 }
 

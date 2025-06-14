@@ -2,7 +2,8 @@
 pipeline {
     agent {
 		docker{
-			image 'ubuntu:latest'
+			image 'docker:24.0.5-cli'
+			args '-v /var/run/docker.sock:/var/run/docker.sock'
 		}
 	}
 	parameters{

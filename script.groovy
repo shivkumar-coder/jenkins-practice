@@ -4,9 +4,6 @@ def buildStage(){
             echo "Multiline shell steps works too"
             ls
             '''
-			sh 'apt-get update'
-			sh 'apt-get install -y docker.io'
-			sh 'service docker start'
 			sh 'docker build --tag my-app-image:latest .'
 
 }

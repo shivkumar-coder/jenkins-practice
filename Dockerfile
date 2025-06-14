@@ -3,7 +3,8 @@ WORKDIR /app
 COPY /.mvn /app/.mvn
 COPY mvnw pom.xml /app/
 COPY src /app/src
-RUN /app/mvnw clean package
+RUN chmod +x mvnw
+RUN ./mvnw clean package
 
 
 FROM eclipse-temurin:11-jre AS execution-stage

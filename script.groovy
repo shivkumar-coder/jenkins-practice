@@ -16,7 +16,7 @@ def testStage(){
 
 def deployStage(){
 
-	sh 'Checking aws version '
+	echo "Checking aws version"
 	sh 'aws --version'
 	
 	echo "Deploying application version ${params.version}"

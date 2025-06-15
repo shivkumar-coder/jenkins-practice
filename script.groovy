@@ -9,12 +9,18 @@ def buildStage(){
   		string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
 		]) {
 			sh '''
+
+		    #!/bin/bash
+		    set -e
+
 			echo "Using AWS credentials"				
   			export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
   			export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-			aws ecr get-login-password --region ${params.aws_region} | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
+			export AWS_REGION=ap-south-1
+			echo "Logging in to AWS ECR"
+			aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
 			echo "Building Docker image"
-			echo "Using AWS region: ${params.aws_region}"
+			
 
 			docker build --tag java-app-image:latest .
 
@@ -46,7 +52,7 @@ def deployStage(){
 	docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
 	docker run -d --name java-app-container-pipeline --rm  -p 8080:8081 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
 
-	// Example deployment command
+	
 	
 	
 	

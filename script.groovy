@@ -51,7 +51,7 @@ def deployStage(){
 	sh '''
 	docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
 	docker run -d --name java-app-container-pipeline --rm  -p 8081:8080 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
-	docker sleep 10
+	
 	docker ps 
 	docker stop java-app-container-pipeline
 

@@ -47,7 +47,7 @@ def deployStage(){
 	docker run -d --name java-app-container-pipeline --rm  -p 8080:8081 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
 
 	// Example deployment command
-	sh '''
+	
 	
 	
 	echo "Deployment completed"

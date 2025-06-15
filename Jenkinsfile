@@ -9,6 +9,7 @@ pipeline {
 	parameters{
 		string(name: 'version', defaultValue: '1.0.0', description:'app version')
 		booleanParam(name:'executeTests', defaultValue:true , description:'check to execute tests')
+		string(name: 'aws_region', defaultValue: 'ap-south-1' , description: 'aws region')
 	}
 	 
 	environment{

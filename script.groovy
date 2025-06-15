@@ -2,9 +2,33 @@ def buildStage(){
 			sh 'echo "Hello World"'
             sh '''
             echo "Multiline shell steps works too"
-            ls
+            
             '''
-			sh 'docker build --tag my-app-image:latest .'
+			withCredentials([
+  		string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+  		string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+		]) {
+			sh '''
+			echo "Using AWS credentials"				
+  			export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  			export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+			aws ecr get-login-password --region ${params.aws_region} | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
+			echo "Building Docker image"
+			echo "Using AWS region: ${params.aws_region}"
+
+			docker build --tag java-app-image:latest .
+
+			echo "Docker image built successfully"
+			echo "Tagging Docker image"
+			docker tag java-app-image:latest 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
+		
+			echo "Pushing Docker image to ECR"
+			docker push 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
+
+			echo "image pushed to ECR successfully"
+			'''
+	}
+			
 
 }
 
@@ -16,10 +40,20 @@ def testStage(){
 
 def deployStage(){
 
-	echo "Checking aws version"
-	sh 'aws --version'
 	
-	echo "Deploying application version ${params.version}"
+	echo "Running image";
+	sh '''
+	docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
+	docker run -d --name java-app-container-pipeline --rm  -p 8080:8081 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
+
+	// Example deployment command
+	sh '''
+	
+	
+	echo "Deployment completed"
+	'''
+	
 }
+	
 
 return this

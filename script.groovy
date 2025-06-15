@@ -16,7 +16,9 @@ def testStage(){
 
 def deployStage(){
 
-	sh 'docker run  --name my-app-test-container my-app-image:latest'
+	sh 'Checking aws version '
+	sh 'aws --version'
+	
 	echo "Deploying application version ${params.version}"
 }
 

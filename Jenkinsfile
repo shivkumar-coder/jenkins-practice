@@ -2,30 +2,30 @@
 pipeline {
     agent {
 		docker{
-			image 'ubuntu:22.04'
+			image 'shivkumarkhaishagi/shiv-docker:latest'
+			args '-v /var/run/docker.sock:/var/run/docker.sock'
 		}
 	}
 	
-	environment{
-		CC = 'clang'
-	}
+	
 	
     stages {
-        stage('Build') {
+        stage('Connect to Ec2 ') {
 		
 			environment{
-				DATE = '2nd JUNE 2025'
+				EC2_IP = 'ec2-13-204-64-109.ap-south-1.compute.amazonaws.com'
 			}
 		
             steps {
-                sh 'echo "Hello World"'
-                sh '''
-                    echo "Multiline shell steps works too"
-                    ls
-                '''
-				echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-				
-				sh 'printenv'
+               sshagent(credentials: ['ec2-java-app-key']) {
+                    sh """
+                          ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
+                          sudo yum install docker -y
+						  sudo systemctl enable docker;
+                    	  sudo usermod -aG docker \$USER;
+                        '
+                    """
+                }
             }
         }
 

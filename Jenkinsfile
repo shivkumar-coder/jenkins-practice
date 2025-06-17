@@ -6,15 +6,15 @@ pipeline {
 			args '-v /var/run/docker.sock:/var/run/docker.sock'
 		}
 	}
-	
+	environment{
+				EC2_IP = 'ec2-13-204-64-109.ap-south-1.compute.amazonaws.com'
+	}
 	
 	
     stages {
         stage('Connect to Ec2 ') {
 		
-			environment{
-				EC2_IP = 'ec2-13-204-64-109.ap-south-1.compute.amazonaws.com'
-			}
+			
 		
             steps {
 				echo "Connecting to EC2 instance at ${EC2_IP}"

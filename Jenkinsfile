@@ -21,7 +21,7 @@ pipeline {
                sshagent(credentials: ['ec2-java-app-key']) {
                     sh """
                           ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
-                          sudo usermod -aG docker ec2-user
+                          
                         '
                     """
                 }
@@ -39,7 +39,7 @@ pipeline {
 						ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
                     		aws ecr get-login-password --region ap-south-1 | \
                     		docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com &&
-                    		docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest &&
+                    		docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest &&
                     		docker images
 							'
 
@@ -61,7 +61,7 @@ pipeline {
                     docker stop java-app || true &&
                     docker rm java-app || true &&
                     docker run -d --name java-app -p 8080:8080 \
-                    432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
+                    432617082502.dkr.ecr.ap-south-1.amazonaws.com/java-app-image:latest
                 '
             """
 				}

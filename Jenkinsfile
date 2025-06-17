@@ -33,15 +33,19 @@ pipeline {
 			
 			
 			steps{
-				echo "Starting to pull image from ECR";
-				sh '''
-					aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
-					docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
-					echo "Image pulled successfully";
-					docker images
+				sshagent(credentials: ['ec2-java-app-key']) {
+					echo "Starting to pull image from ECR";
+					sh '''
+						aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
+						docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
+						echo "Image pulled successfully";
+						docker images
 
-				'''
+					'''
 
+				}
+
+				
 
 
 			}
@@ -49,10 +53,13 @@ pipeline {
 
 		stage('Running Docker Container') {
 			steps {	
-				sh '''
-					echo "Running Docker Container";
-					docker run -d --name java-app -p 8080:8080 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
-				'''
+				sshagent(credentials: ['ec2-java-app-key']) {
+					sh '''
+						echo "Running Docker Container";
+						docker run -d --name java-app -p 8080:8080 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
+					'''
+				}
+				
 				
 
 			}

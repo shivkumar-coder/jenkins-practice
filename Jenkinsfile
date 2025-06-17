@@ -17,6 +17,7 @@ pipeline {
 			}
 		
             steps {
+				echo "Connecting to EC2 instance at ${EC2_IP}"
                sshagent(credentials: ['ec2-java-app-key']) {
                     sh """
                           ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
@@ -26,6 +27,7 @@ pipeline {
                         '
                     """
                 }
+				echo "Connected successfully to EC2 instance at ${EC2_IP}"
             }
         }
 

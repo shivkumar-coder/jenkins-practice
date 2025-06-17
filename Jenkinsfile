@@ -21,9 +21,7 @@ pipeline {
                sshagent(credentials: ['ec2-java-app-key']) {
                     sh """
                           ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
-                          sudo yum install docker -y
-						  sudo systemctl enable docker;
-                    	  sudo usermod -aG docker \$USER;
+                          sudo usermod -aG docker ec2-user
                         '
                     """
                 }
@@ -31,25 +29,30 @@ pipeline {
             }
         }
 
-		stage('Test') {
-			when{
-				expression {
-					BRANCH_NAME == 'develop'
-					
-				}
-			}
+		stage('Pulling Image from ECR') {
+			
 			
 			steps{
-				echo "Running tests";
+				echo "Starting to pull image from ECR";
+				sh '''
+					aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
+					docker pull 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
+					echo "Image pulled successfully";
+					docker images
+
+				'''
+
 
 
 			}
 		}
 
-		stage('Deploy') {
+		stage('Running Docker Container') {
 			steps {	
-				input "Do you want to deploy?"
-				echo "Deploying application"
+				sh '''
+					echo "Running Docker Container";
+					docker run -d --name java-app -p 8080:8080 432617082502.dkr.ecr.ap-south-1.amazonaws.com/shiv-docker:latest
+				'''
 				
 
 			}

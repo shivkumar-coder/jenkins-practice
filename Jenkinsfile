@@ -53,7 +53,7 @@ pipeline {
             string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
             ]) {
 
-                def ecrUrl = env.ECR_URL
+                
                 sh """
 
                 #!/bin/bash
@@ -67,11 +67,11 @@ pipeline {
             
                 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
             
-                docker tag java-app-image:latest ${ecrUrl}:latest
+                docker tag java-app-image:latest ${EC2_URL}:latest
             
                 echo "Pushing image to ecr"
 
-                docker push ${ecrUrl}:latest
+                docker push ${EC2_URL}:latest
                 """
             }
 

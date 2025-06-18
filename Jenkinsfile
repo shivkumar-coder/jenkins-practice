@@ -13,7 +13,7 @@ pipeline {
 
 
     parameters{
-        boolean(name:'deployToEc2', defaultValue: false, description: 'Deploy to EC2 instance after pushing the image');
+        booleanParam(name:'deployToEc2', defaultValue: false, description: 'Deploy to EC2 instance after pushing the image');
     }
     
 
@@ -52,7 +52,9 @@ pipeline {
             string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
             string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
             ]) {
-                sh '''
+
+                def ecrUrl = env.ECR_URL
+                sh """
 
                 #!/bin/bash
                 set -e
@@ -65,12 +67,12 @@ pipeline {
             
                 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
             
-                docker tag java-app-image:latest ${ECR_URL}:latest
+                docker tag java-app-image:latest ${ecrUrl}:latest
             
                 echo "Pushing image to ecr"
-            
-                docker push ${ECR_URL}:latest
-                '''
+
+                docker push ${ecrUrl}:latest
+                """
             }
 
         }

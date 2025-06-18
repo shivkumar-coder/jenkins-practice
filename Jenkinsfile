@@ -12,30 +12,36 @@ pipeline {
     }
 
 
+    parameters{
+        boolean(name:'deployToEc2', defaultValue: false, description: 'Deploy to EC2 instance after pushing the image');
+    }
     
 
-
-stages('Build docker image'){
-
-    steps{
-        sh '''
-            docker rmi java-app-image
-            
-            docker build --tag java-app-image:latest --target execution-stage .
-            
-            
-            
-        
-        '''
-        
-    }
-
-
-}
 
 
     
     stages {
+
+
+        stage('Build docker image'){
+
+            steps{
+            sh '''
+                docker rmi java-app-image
+            
+                docker build --tag java-app-image:latest --target execution-stage .
+            
+            
+            
+        
+                '''
+        
+            }
+
+
+        }
+
+
 
 
         stage('Push docker image'){
@@ -64,15 +70,18 @@ stages('Build docker image'){
                 echo "Pushing image to ecr"
             
                 docker push ${ECR_URL}:latest
-            '''
+                '''
+            }
+
         }
 
     }
-
-}
     
         stage('Connect to Ec2 ') {
         
+        when{
+            expression { params.deployToEc2==true }
+        }
             
         
             steps {
@@ -90,6 +99,9 @@ stages('Build docker image'){
 
         stage('Pulling Image from ECR') {
             
+            when{
+                expression { params.deployToEc2==true }
+            }
             
             steps{
                 sshagent(credentials: ['ec2-java-app-key']) {

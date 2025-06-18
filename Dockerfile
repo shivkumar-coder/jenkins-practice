@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jre as build-stage
 WORKDIR /app
-COPY ./mvn /app/.mvn
+COPY /.mvn /app/.mvn
 COPY mvnw pom.xml  /app/
 COPY src /app/src
 RUN chmod +x mvnw

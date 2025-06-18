@@ -27,8 +27,7 @@ pipeline {
 
             steps{
             sh '''
-                docker rmi java-app-image
-            
+                
                 docker build --tag java-app-image:latest --target execution-stage .
             
             

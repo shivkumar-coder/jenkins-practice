@@ -127,6 +127,10 @@ pipeline {
         }
 
         stage('Running Docker Container') {
+
+            when{
+            expression { params.deployToEc2==true }
+        }
             steps {    
                 sshagent(credentials: ['ec2-java-app-key']) {
                       sh """

@@ -4,7 +4,7 @@ COPY /.mvn /app/.mvn
 COPY mvnw pom.xml  /app/
 COPY src /app/src
 RUN chmod +x mvnw
-RUN mvnw clean package 
+RUN /mvnw clean package 
 
 
 FROM eclipse-temurin:17-jre as execution-stage

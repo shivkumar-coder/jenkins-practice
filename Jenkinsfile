@@ -30,6 +30,7 @@ pipeline {
                 
                 docker build --tag java-app-image:latest --target execution-stage .
             
+                echo "Docker image built successfully with tag java-app-image:latest"
             
             
         
@@ -59,18 +60,18 @@ pipeline {
                 set -e
 
                 echo "Using AWS credentials"                
-                export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-                export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
+                export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
                 export AWS_REGION=ap-south-1
                 echo "Logging in to AWS ECR"
             
-                aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
+                aws ecr get-login-password --region \$AWS_REGION | docker login --username AWS --password-stdin 432617082502.dkr.ecr.ap-south-1.amazonaws.com
             
-                docker tag java-app-image:latest ${EC2_URL}:latest
+                docker tag java-app-image:latest ${env.ECR_URL}:latest
             
                 echo "Pushing image to ecr"
 
-                docker push ${EC2_URL}:latest
+                docker push ${env.ECR_URL}:latest
                 """
             }
 
